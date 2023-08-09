@@ -57,7 +57,7 @@ To capture the real IP address of the client:
     
     
     ```php
-    $ip_address = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ?? '';
+    $ip_address = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     ```
     
     Cloudflare sets the `HTTP_CF_CONNECTING_IP` header to the visitor's IP address.
