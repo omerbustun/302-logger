@@ -43,6 +43,28 @@ Usage Notes
 *   Ensure that direct access to the `config.ini` file is restricted. The provided `.htaccess` file already contains a directive for this, but always double-check for security reasons.
 *   Respect user privacy. Only deploy this tool in scenarios where you have the right to capture user data.
 
+Advanced Configurations
+-----------
+
+### Handling Proxies and CDNs
+
+If your server is behind a reverse proxy like Cloudflare, the logged IP address may not be the actual IP address of the client. Instead, it might capture the IP address of the proxy server.
+
+To capture the real IP address of the client:
+
+1.  **Cloudflare**: Replace the line capturing the IP address in `logger.php` with the following:
+    
+    
+    ```php
+    $ip_address = $_SERVER["HTTP_CF_CONNECTING_IP"] ?? $_SERVER['REMOTE_ADDR'] ?? '';
+    ```
+    
+    Cloudflare sets the `HTTP_CF_CONNECTING_IP` header to the visitor's IP address.
+    
+2.  **Other Proxies**: Different proxies may use different headers to forward the original IP address. For example, many proxies use the `X-Forwarded-For` header. Check the documentation of the proxy or CDN you are using to find the correct header.
+    
+
+
 Contribution
 ------------
 
