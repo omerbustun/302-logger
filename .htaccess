@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteRule ^(.*)$ /logger.php [L]
+
+<Files "config.ini">
+  Order allow,deny
+  Deny from all
+</Files>

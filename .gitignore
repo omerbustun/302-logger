@@ -1,0 +1,11 @@
+vendor/
+*.log
+*.swo
+*.swp
+*.bak
+*.cache
+
+.htpasswd
+
+.DS_Store
+Thumbs.db
