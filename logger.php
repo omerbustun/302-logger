@@ -20,7 +20,7 @@
     }
 
     // Get server-side data
-    $firstVisitTimestamp = $_COOKIE['first_visit'] ?? '';
+    $firstVisitTimestamp = isset($_COOKIE['first_visit']) ? date("Y-m-d H:i:s", $_COOKIE['first_visit']) : 'unknown';
     $ip_address = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
     $request_uri = $_SERVER['REQUEST_URI'] ?? 'unknown';
