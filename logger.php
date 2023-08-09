@@ -10,11 +10,6 @@
     $request_uri = $_SERVER['REQUEST_URI'] ?? '';
     $accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? '';
     $referrer = $_SERVER['HTTP_REFERER'] ?? '';
-
-    // Log the server-side data with a timestamp
-    $timestamp = date("Y-m-d H:i:s");
-    $log = "Timestamp: $timestamp, IP Address: $ip_address, User-Agent: $user_agent, Request URI: $request_uri, Accept-Language: $accept_language, Referrer: $referrer \n";
-    file_put_contents($log_file, $log, FILE_APPEND);
 ?>
 <script>
     // Get client-side data
@@ -25,22 +20,28 @@
     var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     var touch_support = 'ontouchstart' in window;
 
-    // Send client-side data to server
+    // Combine client-side and server-side data
+    var combined_data = {
+        screen_width: screen_width,
+        screen_height: screen_height,
+        cpu_cores: cpu_cores,
+        device_memory: device_memory,
+        connection_type: connection ? connection.effectiveType : 'unknown',
+        touch_support: touch_support,
+        ip_address: "<?php echo $ip_address; ?>",
+        user_agent: "<?php echo $user_agent; ?>",
+        request_uri: "<?php echo $request_uri; ?>",
+        accept_language: "<?php echo $accept_language; ?>",
+        referrer: "<?php echo $referrer; ?>"
+    };
+
+    // Send combined data to server
     fetch('/log_js_data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            screen_width: screen_width,
-            screen_height: screen_height,
-            cpu_cores: cpu_cores,
-            device_memory: device_memory,
-            connection_type: connection ? connection.effectiveType : 'unknown',
-            touch_support: touch_support
-        })
+        body: JSON.stringify(combined_data)
+    }).then(function(response) {
+        // After logging data, perform the redirection
+        window.location.href = "<?php echo $redirect_url . $request_uri; ?>";
     });
 </script>
-<?php
-    // Redirect the user with a 302 status code
-    header("Location: " . $redirect_url . $request_uri, true, 302);
-    exit;
-?>
