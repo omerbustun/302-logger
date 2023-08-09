@@ -24,7 +24,7 @@ Setup
     
 2.  **Configure the Tool**
     
-    *   Rename `config.d.ini` to `config.ini`.
+    *   Rename `config.ini.default` to `config.ini`.
     *   Edit `config.ini` and set your desired `REDIRECT_URL` and `LOG_FILE` path.
 
 
