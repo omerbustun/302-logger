@@ -8,6 +8,7 @@ Features
 
 *   Captures a wide range of data points, including IP address, User-Agent, screen dimensions, and more.
 *   Logs both server-side and client-side data.
+*   Utilizes cookies to assign unique identifiers to new users and to reliably identify returning visitors across sessions.
 *   Performs seamless redirection to a specified URL.
 *   Wildcard redirection support. (e.g., redirecting `webapp.net/asd` to `webapp.com/asd`)
 
