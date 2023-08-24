@@ -19,6 +19,8 @@ Setup
         
     ```bash
     git clone https://github.com/omerbustun/302-logger.git
+    ```
+    ```bash
     cd 302-logger
     ```
     
