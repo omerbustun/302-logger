@@ -66,7 +66,12 @@ To capture the real IP address of the client:
     
 2.  **Other Proxies**: Different proxies may use different headers to forward the original IP address. For example, many proxies use the `X-Forwarded-For` header. Check the documentation of the proxy or CDN you are using to find the correct header.
     
+Misc.
+-----
 
+### Log Parser Script
+
+If you're looking to parse the generated logs into a structured format for easy analysis, you can use the [**log parser script**](https://gist.github.com/omerbustun/97e26e985e3079eb61cc7584a0eb9654). The script reads the `.txt` log file, extracts the data, and saves it in an Excel sheet.
 
 Contribution
 ------------
