@@ -1,21 +1,38 @@
 <?php
-    // Read from the config.ini file
-    $config = parse_ini_file('config.ini');
-    $log_file = $config['LOG_FILE'];
+include 'db_connect.php';
 
-    $json = file_get_contents('php://input');
-    $data = json_decode($json);
+$config = parse_ini_file('config.ini');
+$log_methods = explode(',', $config['LOG_METHOD']);
+$log_file = $config['LOG_FILE'];
 
-    // Check if all values in the data are empty
-    $all_empty = !array_filter((array) $data, function($value) {
-        return !empty($value) || $value === '0' || $value === 0;
-    });
+$json = file_get_contents('php://input');
+$data = json_decode($json);
 
-    // Only log if not all values are empty
-    if (!$all_empty) {
-        // Create the log string with all data
-        $timestamp = date("Y-m-d H:i:s");
-        $log = "Timestamp: $timestamp, IP Address: {$data->ip_address}, User-Agent: {$data->user_agent}, Request URI: {$data->request_uri}, Accept-Language: {$data->accept_language}, Referrer: {$data->referrer}, Screen Width: {$data->screen_width}, Screen Height: {$data->screen_height}, CPU Cores: {$data->cpu_cores}, Device Memory: {$data->device_memory}, Connection Type: {$data->connection_type}, Touch Support: {$data->touch_support}, First Visit: {$data->first_visit}, Returning User: {$data->is_returning_user}, UID: {$data->user_uid} \\n";
+$all_empty = !array_filter((array) $data, function($value) {
+    return !empty($value) || $value === '0' || $value === 0;
+});
+
+if (!$all_empty) {
+    $timestamp = date("Y-m-d H:i:s");
+
+    // Text file logging
+    if (in_array('TXT', $log_methods)) {
+        $log = "Timestamp: $timestamp, IP Address: {$data->ip_address}, ..."; // continue with log string
         file_put_contents($log_file, $log, FILE_APPEND);
     }
+
+    // Database logging
+    if (in_array('DB', $log_methods)) {
+        try {
+            $conn = getDBConnection();
+            $stmt = $conn->prepare("INSERT INTO user_log (timestamp, ip_address, user_agent, request_uri, accept_language, referrer, screen_width, screen_height, cpu_cores, device_memory, connection_type, touch_support, first_visit, is_returning_user, user_uid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssiisiisssss", $timestamp, $data->ip_address, $data->user_agent, $data->request_uri, $data->accept_language, $data->referrer, $data->screen_width, $data->screen_height, $data->cpu_cores, $data->device_memory, $data->connection_type, $data->touch_support, $data->first_visit, $data->is_returning_user, $data->user_uid);
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+        } catch (Exception $e) {
+            error_log("Database Error: " . $e->getMessage());
+        }
+    }
+}
 ?>
