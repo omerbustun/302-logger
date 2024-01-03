@@ -11,6 +11,7 @@ Features
 *   Utilizes cookies to assign unique identifiers to new users and to reliably identify returning visitors across sessions.
 *   Performs seamless redirection to a specified URL.
 *   Wildcard redirection support. (e.g., redirecting `webapp.net/asd` to `webapp.com/asd`)
+*   **New:** Supports logging to a MySQL database, configurable in `config.ini`.
 
 Setup
 -----
@@ -28,13 +29,39 @@ Setup
     
     *   Rename `config.ini.default` to `config.ini`.
     *   Edit `config.ini` and set your desired `REDIRECT_URL` and `LOG_FILE` path.
+    *   **New:** Configure the logging method (`DB`, `TXT`, or both) in `config.ini`.
+    *   If using database logging, provide the database credentials in `config.ini`.
 
+3.  **Database Setup for Logging (if using DB logging)**
+    
+    *   Create a MySQL database for the logger.
+    *   Use the following SQL command to create the necessary table:
+        ```sql
+        CREATE TABLE user_log (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            timestamp DATETIME,
+            ip_address VARCHAR(255),
+            user_agent TEXT,
+            request_uri TEXT,
+            accept_language VARCHAR(255),
+            referrer TEXT,
+            screen_width INT,
+            screen_height INT,
+            cpu_cores INT,
+            device_memory INT,
+            connection_type VARCHAR(255),
+            touch_support BOOLEAN,
+            first_visit DATETIME,
+            is_returning_user BOOLEAN,
+            user_uid VARCHAR(255)
+        );
+        ```
 
-3.  **Deploy**
+4.  **Deploy**
  
     Upload the files to your web server's root directory or a subdirectory. Make sure your server supports and has enabled PHP and the Apache mod\_rewrite module.
     
-4.  **Access the Tool**
+5.  **Access the Tool**
     
     Any request to your domain (or the subdirectory where you've placed the logger) will now capture data and then redirect to the specified `REDIRECT_URL`.
     
