@@ -1,32 +1,32 @@
 <?php
-    // Read from the config.ini file
-    $config = parse_ini_file('config.ini');
-    $redirect_url = $config['REDIRECT_URL'];
-    $log_file = $config['LOG_FILE'];
+// Read from the config.ini file
+$config = parse_ini_file('config.ini');
+$redirect_url = $config['REDIRECT_URL'];
+$log_file = $config['LOG_FILE'];
 
-    if (!isset($_COOKIE['first_visit'])) {
-        setcookie("first_visit", time(), time() + (365 * 24 * 60 * 60), "/");  // expires in 1 year
-        $isReturningUser = false;
-    } else {
-        $isReturningUser = true;
-    }
+if (!isset($_COOKIE['first_visit'])) {
+    setcookie("first_visit", time(), time() + (365 * 24 * 60 * 60), "/");  // expires in 1 year
+    $isReturningUser = false;
+} else {
+    $isReturningUser = true;
+}
 
-    // Check for UID or set a new one
-    if (!isset($_COOKIE['user_uid'])) {
-        $userUID = bin2hex(random_bytes(16)); // Generate a random UID
-        setcookie("user_uid", $userUID, time() + (365 * 24 * 60 * 60), "/");  // expires in 1 year
-    } else {
-        $userUID = $_COOKIE['user_uid'];
-    }
+// Check for UID or set a new one
+if (!isset($_COOKIE['user_uid'])) {
+    $userUID = bin2hex(random_bytes(16)); // Generate a random UID
+    setcookie("user_uid", $userUID, time() + (365 * 24 * 60 * 60), "/");  // expires in 1 year
+} else {
+    $userUID = $_COOKIE['user_uid'];
+}
 
-    // Get server-side data
-    $firstVisitTimestamp = isset($_COOKIE['first_visit']) ? date("Y-m-d H:i:s", $_COOKIE['first_visit']) : 'unknown';
-    $ip_address = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-    $request_uri = $_SERVER['REQUEST_URI'] ?? 'unknown';
-    $accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'unknown';
-    $referrer = $_SERVER['HTTP_REFERER'] ?? 'unknown';
-    
+// Get server-side data
+$firstVisitTimestamp = isset($_COOKIE['first_visit']) ? date("Y-m-d H:i:s", $_COOKIE['first_visit']) : 'unknown';
+$ip_address = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+$user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+$request_uri = $_SERVER['REQUEST_URI'] ?? 'unknown';
+$accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'unknown';
+$referrer = $_SERVER['HTTP_REFERER'] ?? 'unknown';
+
 ?>
 <script>
     // Get client-side data
@@ -59,7 +59,9 @@
     // Send combined data to server
     fetch('/log_js_data.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(combined_data)
     }).then(function(response) {
         // After logging data, perform the redirection

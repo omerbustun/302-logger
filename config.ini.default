@@ -1,3 +1,7 @@
 [settings]
 REDIRECT_URL = "https://domain.tld"
 LOG_FILE = "logs.txt"
+DB_HOST = "localhost"
+DB_NAME = ""
+DB_USER = ""
+DB_PASS = ""
