@@ -4,10 +4,10 @@
 
 ## Features
 
-* Captures a wide range of data points, including IP address, User-Agent, screen dimensions, and more.
+* Captures data points, including IP address, User-Agent, screen dimensions.
 * Logs both server-side and client-side data.
 * Utilizes cookies to assign unique identifiers to new users and to reliably identify returning visitors across sessions.
-* Performs seamless redirection to a specified URL.
+* Performs redirection to a specified URL.
 * Wildcard redirection support. (e.g., redirecting `webapp.net/asd` to `webapp.com/asd`)
 * Logs data to both a file and a MySQL database for redundancy and easier analysis.
 
@@ -94,7 +94,7 @@ If you're looking to parse the generated logs into a structured format for easy 
 
 ## Contribution
 
-Feel free to fork this repository and submit pull requests for improvements or additional features. Please ensure that your contributions adhere to best practices for security and performance.
+Feel free to fork this repository and submit pull requests for improvements or additional features.
 
 ## License
 
